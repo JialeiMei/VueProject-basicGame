@@ -52,7 +52,7 @@
         </div>
     </div>
 
-      <div v-if="play" class="row justify-center" style="margin-top: 30px">
+      <div v-if="prints.length > 0" class="row justify-center" style="margin-top: 30px">
         <div class="col-10 shadow-4">
           <div class="grid-space">
           <div class="col-4" :class= print.classStyle v-for="print in prints" :key="print.index">
@@ -82,7 +82,6 @@ export default {
             yHealMsg: "Player heals for ",
             ySAttackMsg: "Player special attacks monster for ",
             prints: [],
-            play: false,
             color: 'mediumseagreen'
         }
 
@@ -90,12 +89,15 @@ export default {
 
     methods: {
 
+        random(value){
+            return Math.floor(Math.random()* value) ;
+        },
+
         onAttack() {
-            let yourRandom = Math.floor(Math.random()*20);
-            let monsterRandom = Math.floor(Math.random()*10);
+            let yourRandom = this.random(20);
+            let monsterRandom = this.random(10);
             this.playerHp -= yourRandom;
             this.monsterHp -= monsterRandom;
-            this.play = true;
             this.prints.unshift({
                 text: this.mAttackMsg + yourRandom,
                 classStyle: 'you'
@@ -109,11 +111,10 @@ export default {
         },
 
         onSpecial() {
-            let yourRandom = Math.floor(Math.random()*20);
-            let monsterRandom = Math.floor(Math.random()*30);
+            let yourRandom = this.random(20);
+            let monsterRandom = this.random(30);
             this.playerHp -= yourRandom;
             this.monsterHp -= monsterRandom;
-            this.play = true;
             this.prints.unshift({
                 text: this.mAttackMsg + yourRandom,
                 classStyle: 'you'
@@ -126,11 +127,16 @@ export default {
 
         },
         onHeal() {
-            let yourRandom = Math.floor(Math.random()*20);
-            let healRandom = Math.floor(Math.random()*20);
-            this.playerHp += healRandom;
+            let yourRandom = this.random(20);
+            let healRandom = this.random(20);
+            if(this.playerHp <= 90){
+                this.playerHp += healRandom;
+            }
+            else{
+                this.playerHp = 100;
+            }
             this.playerHp -= yourRandom;
-            this.play = true;
+
             this.prints.unshift({
                 text: this.mAttackMsg + yourRandom,
                 classStyle: 'you'
@@ -146,14 +152,12 @@ export default {
             if(this.playerHp <= 0){
                 alert('You lose');
                 this.start = false;
-                this.play = false;
                 this.playerHp = 100;
                 this.monsterHp = 100;
             }
             if(this.monsterHp <= 0){
                 alert('You win');
                 this.start = false;
-                this.play = false;
                 this.playerHp = 100;
                 this.monsterHp = 100;
             }
