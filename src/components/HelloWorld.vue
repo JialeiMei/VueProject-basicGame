@@ -124,7 +124,7 @@ export default {
                 text: this.ySAttackMsg + monsterRandom,
                 classStyle: 'monster'
             })
-
+            this.result()
         },
         onHeal() {
             let yourRandom = this.random(20);
@@ -136,7 +136,6 @@ export default {
                 this.playerHp = 100;
             }
             this.playerHp -= yourRandom;
-
             this.prints.unshift({
                 text: this.mAttackMsg + yourRandom,
                 classStyle: 'you'
@@ -146,21 +145,27 @@ export default {
                 text: this.yHealMsg + healRandom,
                 classStyle: 'monster'
             });
+            this.result()
         },
 
         result() {
+
             if(this.playerHp <= 0){
                 alert('You lose');
                 this.start = false;
                 this.playerHp = 100;
                 this.monsterHp = 100;
+                this.prints = [];
             }
+
             if(this.monsterHp <= 0){
                 alert('You win');
                 this.start = false;
                 this.playerHp = 100;
                 this.monsterHp = 100;
+                this.prints = [];
             }
+
 
         }
     }
